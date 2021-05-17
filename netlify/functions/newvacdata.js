@@ -38,8 +38,8 @@ exports.handler = async function(event, context) {
 
     var message = { 
         app_id: process.env.ONESIGNAL_APP_ID,
-        contents: {"en": "New vaccination data available!"},
-        headings: {"en": "German Covid Vaccinations"},
+        contents: {"en": "Neue Impfdaten verfügbar!"},
+        headings: {"en": "Vacstats Deutschland"},
         included_segments: ["Subscribed Users"]
     };
 

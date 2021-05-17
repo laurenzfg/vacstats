@@ -79,7 +79,7 @@ function App() {
       </div>
       <div className="info">
         <p>
-          Wenn Du die neuen Impfdaten auch nicht erwarten kannst, kannst du mit der
+          Wenn Du die neuen Impfdaten auch nicht erwarten kannst, kannst Du mit der
           Glocke Push-Nachrichten abonnieren. Wir senden Dir dann innerhalb von 30 Minuten nach
           Veröffentlichung durch das RKI eine Push Nachricht zu.
           Leider können wir diesen Service auf Apple-Geräten nicht bieten.
