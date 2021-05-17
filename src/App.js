@@ -1,20 +1,74 @@
 import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
+
+const apiEndpoint = "http://api.vacstats.laurenzfg.com/vaccinations"
 
 function App() {
+  const [vacData, setVacData] = useState({
+      administeredVaccinations: 0,
+      vaccinated: 0,
+      vaccination: {
+        biontech: 0,
+        moderna: 0,
+        astraZeneca: 0,
+      },
+      delta: 0,
+      quote: 0,
+      secondVaccination: {
+        vaccinated: 0,
+        vaccination: {
+          biontech: 0,
+          moderna: 0,
+          astraZeneca: 0,
+          janssen: 0,
+        },
+        delta: 0,
+        quote: 0,
+      },
+      indication: {
+        age: null,
+        job: null,
+        medical: null,
+        nursingHome: null,
+        secondVaccination: {
+          age: null,
+          job: null,
+          medical: null,
+          nursingHome: null,
+        },
+      },
+      states: {},
+  });
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    axios.get(apiEndpoint)
+    .then((response) => {
+      setVacData(response.data.data);
+    }, (error) => {
+      console.log(error);
+    })
+  });
+
+  const percentage = dec => {
+    return (dec * 100).toFixed(2);
+  }
+
   return (
     <>
       <div className="App">
-        <p>Am 01.01.2021 wurden in Deutschland 0 Impfdosen verabreicht.
-        Davon entfielen 0 auf Erst- und 0 auf Zweitimpfungen.</p>
+        <p>Am 01.01.2021 wurden in Deutschland {vacData.delta + vacData.secondVaccination.delta} Impfdosen verabreicht.
+        Davon entfielen {vacData.delta} auf Erst- und {vacData.secondVaccination.delta} auf Zweitimpfungen.</p>
 
-        <p>Über eine mindestens einmalige Impfung verfügen aktuell 0 Menschen.
-        Das sind 0 % der Einwohner:innen Deutschlands.</p>
+        <p>Über eine mindestens einmalige Impfung verfügen aktuell {vacData.vaccinated} Menschen.
+        Das sind {percentage(vacData.quote)} % der Einwohner:innen Deutschlands.</p>
 
-        <p>In den Genuss eines vollständigen Impfschutzes kommen aktuell 0 Menschen.
-        Das sind 0 % der Einwohner:innen Deutschlands.</p>
+        <p>In den Genuss eines vollständigen Impfschutzes kommen aktuell {vacData.secondVaccination.vaccinated} Menschen.
+        Das sind {percentage(vacData.secondVaccination.quote)} % der Einwohner:innen Deutschlands.</p>
 
-        <p>Der Impfstoffmix aller begonnenn und abgeschlossenen Impfserien ist:
-          0 Biontech, 0 Moderna, 0 AstraZeneca und 0 Janssen.</p>
+        <p>Der Impfstoffmix aller begonnenen und abgeschlossenen Impfserien ist: {vacData.vaccination.biontech} Biontech,&nbsp;
+        {vacData.vaccination.moderna} Moderna, {vacData.vaccination.astraZeneca} AstraZeneca und {vacData.secondVaccination.vaccination.janssen} Janssen.</p>
       </div>
       <div className="info">
         <p>
