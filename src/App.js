@@ -5,6 +5,8 @@ import axios from 'axios'
 const apiEndpoint = "https://api.vacstats.laurenzfg.com/vaccinations"
 
 function App() {
+  const [lu, setLu] = useState(new Date(0)); // Last Update
+
   const [vacData, setVacData] = useState({
       administeredVaccinations: 0,
       vaccinated: 0,
@@ -46,6 +48,7 @@ function App() {
     axios.get(apiEndpoint)
     .then((response) => {
       setVacData(response.data.data);
+      setLu(new Date(response.data.meta.lastUpdate));
     }, (error) => {
       console.log(error);
     })
@@ -62,7 +65,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <p>Am 01.01.2021 wurden in Deutschland {fancynum(vacData.delta + vacData.secondVaccination.delta)} Impfdosen verabreicht.
+        <p>Am {lu.toLocaleDateString()} wurden in Deutschland {fancynum(vacData.delta + vacData.secondVaccination.delta)} Impfdosen verabreicht.
         Davon entfielen {fancynum(vacData.delta)} auf Erst- und {fancynum(vacData.secondVaccination.delta)} auf Zweitimpfungen.</p>
 
         <p>Über eine mindestens einmalige Impfung verfügen aktuell {fancynum(vacData.vaccinated)} Menschen.
