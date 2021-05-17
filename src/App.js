@@ -55,20 +55,24 @@ function App() {
     return (dec * 100).toFixed(2);
   }
 
+  const fancynum = number => {
+    return number.toLocaleString();
+  };
+
   return (
     <>
       <div className="App">
-        <p>Am 01.01.2021 wurden in Deutschland {vacData.delta + vacData.secondVaccination.delta} Impfdosen verabreicht.
-        Davon entfielen {vacData.delta} auf Erst- und {vacData.secondVaccination.delta} auf Zweitimpfungen.</p>
+        <p>Am 01.01.2021 wurden in Deutschland {fancynum(vacData.delta + vacData.secondVaccination.delta)} Impfdosen verabreicht.
+        Davon entfielen {fancynum(vacData.delta)} auf Erst- und {fancynum(vacData.secondVaccination.delta)} auf Zweitimpfungen.</p>
 
-        <p>Über eine mindestens einmalige Impfung verfügen aktuell {vacData.vaccinated} Menschen.
+        <p>Über eine mindestens einmalige Impfung verfügen aktuell {fancynum(vacData.vaccinated)} Menschen.
         Das sind {percentage(vacData.quote)} % der Einwohner:innen Deutschlands.</p>
 
-        <p>In den Genuss eines vollständigen Impfschutzes kommen aktuell {vacData.secondVaccination.vaccinated} Menschen.
+        <p>In den Genuss eines vollständigen Impfschutzes kommen aktuell {fancynum(vacData.secondVaccination.vaccinated)} Menschen.
         Das sind {percentage(vacData.secondVaccination.quote)} % der Einwohner:innen Deutschlands.</p>
 
-        <p>Der Impfstoffmix aller begonnenen und abgeschlossenen Impfserien ist: {vacData.vaccination.biontech} Biontech,&nbsp;
-        {vacData.vaccination.moderna} Moderna, {vacData.vaccination.astraZeneca} AstraZeneca und {vacData.secondVaccination.vaccination.janssen} Janssen.</p>
+        <p>Der Impfstoffmix aller begonnenen und abgeschlossenen Impfserien ist: {fancynum(vacData.vaccination.biontech)} Biontech,&nbsp;
+        {fancynum(vacData.vaccination.moderna)} Moderna, {fancynum(vacData.vaccination.astraZeneca)} AstraZeneca und {fancynum(vacData.secondVaccination.vaccination.janssen)} Janssen.</p>
       </div>
       <div className="info">
         <p>
