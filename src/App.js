@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
-const apiEndpoint = "http://api.vacstats.laurenzfg.com/vaccinations"
+const apiEndpoint = "https://api.vacstats.laurenzfg.com/vaccinations"
 
 function App() {
   const [vacData, setVacData] = useState({
