@@ -49,7 +49,7 @@ function App() {
     }, (error) => {
       console.log(error);
     })
-  });
+  }, []); // [] ensures once only
 
   const percentage = dec => {
     return (dec * 100).toFixed(2);
