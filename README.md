@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+# Vacstats
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Live version](https://vacstats.laurenzfg.com)
 
-## Available Scripts
+This app displays a quick overview over the vaccination efforts in Germany.
+It is to be used in conjunction with Marlon Lückert's
+[COVID Numbers API](https://github.com/marlon360/rki-covid-api).
 
-In the project directory, you can run:
+The endpoint of API has to be specified in App.js.
 
-### `npm start`
+## Push Notifications
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The *killer feature* of this vaccination page is Push Messages.
+Since RKI is publishing vaccination data on a random time, it is desireable
+to be notified as soon as vaccination data is available.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Hence, I developed a patch to Marlon's API which calls a web hook as soon as
+a endpoint changes. Note that the vaccination endpoint needs to be called
+quite frequently to make sure the API server polls the RKI data often enough.
+A nice hack to achieve is to set up an uptime monitor which calls the vaccination
+endpoint every minute. In conjunction with the cache of the API, this ensures
+that RKI is polled every 15 minutes or so and the web hook is triggered reasonably
+fast after update.
 
-### `npm test`
+This projects contains a serverless function ready to be deployed as a Netlify Function
+(tested) or AWS Lambda or some comparable service.
+This function serves as the web hook endpoint to the API and itselfs
+triggers a One Signal Web push notification to everyone who subscribed in this web app.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+If you want to setup push in your own fork of this web app you need to:
 
-### `npm run build`
+- Swap the included One Signal API key for one registered by you
+- Save your private One Signal API key as the appropiate environment variables
+- Register the URL of the serverless function in the netlify folder as a web hook
+    in your instance of Marlon's API (with patched web hook support)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Note that we try to include web hook support in the upstream of Marlon's API.
