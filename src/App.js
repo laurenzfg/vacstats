@@ -47,10 +47,12 @@ function App() {
     // Update the document title using the browser API
     axios.get(apiEndpoint)
     .then((response) => {
-      setVacData(response.data.data);
-      setLu(new Date(response.data.meta.lastUpdate));
+        setVacData(response.data.data);
+        let lastUp = new Date(response.data.meta.lastUpdate);
+        lastUp.setTime(lastUp.getTime()-(24*60*60*1000));
+        setLu(lastUp);
     }, (error) => {
-      console.log(error);
+        console.log(error);
     })
   }, []); // [] ensures once only
 
