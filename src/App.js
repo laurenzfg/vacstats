@@ -87,16 +87,9 @@ function App() {
         {fancynum(vacData.vaccination.moderna)} Moderna, {fancynum(vacData.vaccination.astraZeneca)} AstraZeneca und {fancynum(vacData.vaccination.janssen)} Janssen.</p>
         <p>Insgesamt wurden mittlerweile {fancynum(vacData.administeredVaccinations)} Dosen verabreicht.</p>
       </div>
-      { window.OneSignal.isPushNotificationsSupported() &&
-        <div className="info">
-        <p>
-          Du kannst die neuen Impfdaten auch nicht erwarten?
-          Gerne senden wir Dir innerhalb von 30 Minuten nach
-          Veröffentlichung durch das RKI eine Push Nachricht zu.
-          <div className="onesignal-customlink-container"></div>
-        </p>
+      <div className="info">
+        <div className="onesignal-customlink-container"></div>
       </div>
-      }
       <footer>
         <p>Engineered with ❤️ in Aachen.</p>
       </footer>
