@@ -67,9 +67,15 @@ function App() {
 
   // Also read if we need to offer unsubscribe after rendering
   useEffect(() => {
-    window.OneSignal.push(async function() {
+    let updatePushStatus = async () => {
       let isPNE = await window.OneSignal.isPushNotificationsEnabled();
       setShowUnsubscribe(isPNE);
+    };
+
+    window.OneSignal.push(updatePushStatus);
+
+    window.OneSignal.push(function() {
+      window.OneSignal.on('subscriptionChange', updatePushStatus);
     });
   });
 
@@ -104,7 +110,7 @@ function App() {
         <p>Engineered with ❤️ in Aachen.</p>
         { showPushUnsubscribe &&
                   <p><button href="#" className="removeConsentButton"
-                    onClick={() => {window.OneSignal.push(["setSubscription", false]);alert("Wir werden Dir keine Benachrichtigungen mehr senden!");}}>
+                  onClick={() => {window.OneSignal.push(["setSubscription", false]);alert("Wir werden Dir keine Benachrichtigungen mehr senden!");}}>
                   Zustimmung für Push-Benachrichtigungen widerrufen</button></p>
         }
 
