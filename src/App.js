@@ -5,6 +5,8 @@ import axios from 'axios'
 const apiEndpoint = "https://api.vacstats.laurenzfg.com/vaccinations"
 
 function App() {
+  const [showPushUnsubscribe, setShowUnsubscribe] = useState(false);
+
   const [lu, setLu] = useState(new Date(0)); // Last Update
 
   const [vacData, setVacData] = useState({
@@ -63,6 +65,14 @@ function App() {
     })
   }, []); // [] ensures once only
 
+  // Also read if we need to offer unsubscribe after rendering
+  useEffect(() => {
+    window.OneSignal.push(async function() {
+      let isPNE = await window.OneSignal.isPushNotificationsEnabled();
+      setShowUnsubscribe(isPNE);
+    });
+  });
+
   const percentage = dec => {
     return (dec * 100).toFixed(2);
   }
@@ -92,7 +102,7 @@ function App() {
       </div>
       <footer>
         <p>Engineered with ❤️ in Aachen.</p>
-        { window.OneSignal.isPushNotificationsSupported() &&
+        { showPushUnsubscribe &&
                   <p><button href="#" className="removeConsentButton"
                     onClick={() => {window.OneSignal.push(["setSubscription", false]);alert("Wir werden Dir keine Benachrichtigungen mehr senden!");}}>
                   Zustimmung für Push-Benachrichtigungen widerrufen</button></p>
