@@ -92,6 +92,12 @@ function App() {
       </div>
       <footer>
         <p>Engineered with ❤️ in Aachen.</p>
+        { window.OneSignal.isPushNotificationsSupported() &&
+                  <p><button href="#" className="removeConsentButton"
+                    onClick={() => {window.OneSignal.push(["setSubscription", false]);alert("Wir werden Dir keine Benachrichtigungen mehr senden!");}}>
+                  Zustimmung für Push-Benachrichtigungen widerrufen</button></p>
+        }
+
       </footer>
     </>
   );
