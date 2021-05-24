@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import InfoTextComponent from './InfoTextComponent';
 import ChartComponent from './ChartComponent';
+import FooterComponent from './FooterComponent';
 
 const apiEndpoint = "https://api.vacstats.laurenzfg.com/vaccinations"
 
 function App() {
-  const [showPushUnsubscribe, setShowUnsubscribe] = useState(false);
 
   const [lu, setLu] = useState(new Date(0)); // Last Update
   
@@ -69,20 +69,6 @@ function App() {
     })
   }, []); // [] ensures once only
 
-  // Also read if we need to offer unsubscribe after rendering
-  useEffect(() => {
-    let updatePushStatus = async () => {
-      let isPNE = await window.OneSignal.isPushNotificationsEnabled();
-      setTimeout(()=>{setShowUnsubscribe(isPNE);}, 5000);
-    };
-
-    window.OneSignal.push(updatePushStatus);
-
-    window.OneSignal.push(function() {
-      window.OneSignal.on('subscriptionChange', updatePushStatus);
-    });
-  });
-
   return (
     <>
 
@@ -97,15 +83,7 @@ function App() {
       <div className="pushSubscribe">
         <div className="onesignal-customlink-container"></div>
       </div>
-      <footer>
-        <p>Engineered with ❤️ in Aachen.</p>
-        { showPushUnsubscribe &&
-                  <p><button href="#" className="removeConsentButton"
-                  onClick={() => {window.OneSignal.push(["setSubscription", false]);alert("Wir werden Dir keine Benachrichtigungen mehr senden!");}}>
-                  Zustimmung für Push-Benachrichtigungen widerrufen</button></p>
-        }
-
-      </footer>
+      <FooterComponent />
     </>
   );
 }
