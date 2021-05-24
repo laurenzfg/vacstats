@@ -1,5 +1,5 @@
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
@@ -17,6 +17,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 export default function SimplePieChart (props) {
 
   return (
+    <ResponsiveContainer width={400} height={400}>
       <PieChart width={400} height={400}>
         <Pie
           data={props.data}
@@ -32,7 +33,9 @@ export default function SimplePieChart (props) {
             <Cell key={`cell-${index}`} fill={props.colors[index % props.colors.length]} />
           ))}
         </Pie>
+        <Legend layout="vertical" align="right" />
       </PieChart>
+    </ResponsiveContainer>
   );
 
 }
