@@ -73,7 +73,7 @@ function App() {
   useEffect(() => {
     let updatePushStatus = async () => {
       let isPNE = await window.OneSignal.isPushNotificationsEnabled();
-      setShowUnsubscribe(isPNE);
+      setTimeout(()=>{setShowUnsubscribe(isPNE);}, 5000);
     };
 
     window.OneSignal.push(updatePushStatus);
