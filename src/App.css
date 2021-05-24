@@ -26,6 +26,7 @@ Footer {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  vertical-align: top;
 }
 
 .pushSubscribe {
