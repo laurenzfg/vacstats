@@ -30,8 +30,6 @@ function App() {
       }
   });
 
-  
-
   useEffect(() => {
     // Update the document title using the browser API
     axios.get(apiEndpoint)
@@ -80,7 +78,7 @@ function App() {
         <ChartComponent vacData={vacData} />
       }
   
-      <div className="pushSubscribe">
+      <div id="pushSubscribe">
         <div className="onesignal-customlink-container"></div>
       </div>
       <FooterComponent />

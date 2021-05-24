@@ -24,7 +24,7 @@ export default function ChartComponent(props) {
       return (
         [
           { name: 'geimpft', value: vacData.secondVaccination.vaccinated },
-          { name: 'offene Impfserie', value: vacData.vaccinated - vacData.secondVaccination.vaccinated },
+          { name: 'nur Erstimpf.', value: vacData.vaccinated - vacData.secondVaccination.vaccinated },
           { name: 'ungeimpft', value: 83166711 - vacData.vaccinated }, // https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/bevoelkerung-nichtdeutsch-laender.html
         ]
       );
@@ -35,17 +35,17 @@ export default function ChartComponent(props) {
     const makefirstsecChart = () => {
       return (
         [
-          { name: 'Erstimpfungen', value: vacData.delta },
-          { name: 'Zweitimpfungen', value: vacData.secondVaccination.delta },
+          { name: 'Erst', value: vacData.delta },
+          { name: 'Zweit', value: vacData.secondVaccination.delta },
         ]
       );
     }
 
     return (
       <div className="charts">
-        <PieChart data={makeVaccineChart()} colors={vacMakeColors} />
-        <PieChart data={makePopuChart()} colors={popuColors} />
-        <PieChart data={makefirstsecChart()} colors={firstsecColors} />
+        <PieChart data={makeVaccineChart()} colors={vacMakeColors} title="Verhältnis der Impfstoffe" />
+        <PieChart data={makePopuChart()} colors={popuColors} title="Impfstatus der Bevölkerung" />
+        <PieChart data={makefirstsecChart()} colors={firstsecColors} title={["Tagesanteil",<br />, "Erst- und Zweitimpfungen"]} />
       </div>
     );
 }
