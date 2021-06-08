@@ -11,6 +11,8 @@ export default function InfoTextComponent(props) {
 
     return (
       <>
+        <b>WARNUNG: Aufgrund einer Änderung des Datenformats seitens des RKI werden aktuell One-Shot-Impfungen sowohl als Erst- als auch als Zweitimpfung gezählt.
+        Das bedeutet insbesondere, dass die Summe der gestern verabreichten Impfdosen zu hoch ist.</b>
         <p>Am {lu.toLocaleDateString()} wurden in Deutschland {fancynum(vacData.delta + vacData.secondVaccination.delta)} Impfdosen verabreicht.
         Davon entfielen {fancynum(vacData.delta)} auf Erst- und {fancynum(vacData.secondVaccination.delta)} auf Zweitimpfungen.</p>
 
