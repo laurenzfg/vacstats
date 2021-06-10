@@ -21,41 +21,41 @@ function App() {
         janssen: 0,
         curevac: 0
       },
-      delta: 0, // first vaccinations yesterday
+      delta: 0, // first jabs + J&J yesterday
       quote: 0, // percentage vaccinated at least one
       secondVaccination: {
         vaccinated: 0, // fully vaccinated; everybody who had two doses or one janssen
         delta: 0, // seccond jabs + janssen jabs yesterday
         quote: 0, // percentage fully vaccination
-      }
+      },
+      firstVacs: 0, // first jabs of two dose vacs and J&J Vacs
+      secondVacs: 0, // second jabs of two dose vacs only
   });
 
   useEffect(() => {
-    // Update the document title using the browser API
     axios.get(apiEndpoint)
     .then((response) => {
         const apiData = response.data.data;
-        
-        // Interesting Quirk: RKI / API does not count Janssen as a first dose, they count it second dose ONLY
-        // Thus do get "at least started vaccination series" in our sense, we need to add "started series" in their sense,
-        // which is first shots of two dose vaccines, to the one-shot janssen vaccinations!
 
-        setVacData({
-          administeredVaccinations: apiData.administeredVaccinations,
-          vaccinated: apiData.vaccinated + apiData.secondVaccination.vaccination.janssen,
-          vaccination: {
-            biontech: apiData.vaccination.biontech,
-            moderna: apiData.vaccination.moderna,
-            astraZeneca: apiData.vaccination.astraZeneca,
-            janssen: apiData.secondVaccination.vaccination.janssen,
-            curevac: 0
-          },
-          delta: apiData.delta,
-          quote: apiData.quote,
-          secondVaccination: {
-            vaccinated: apiData.secondVaccination.vaccinated,
-            delta: apiData.secondVaccination.delta,
-            quote: apiData.secondVaccination.quote,
+        setVacData(vacData => {
+          return {
+            ...vacData,
+            administeredVaccinations: apiData.administeredVaccinations,
+            vaccinated: apiData.vaccinated,
+            vaccination: {
+              biontech: apiData.vaccination.biontech,
+              moderna: apiData.vaccination.moderna,
+              astraZeneca: apiData.vaccination.astraZeneca,
+              janssen: apiData.vaccination.janssen,
+              curevac: 0,
+            },
+            delta: apiData.delta,
+            quote: apiData.quote,
+            secondVaccination: {
+              vaccinated: apiData.secondVaccination.vaccinated,
+              delta: apiData.secondVaccination.delta,
+              quote: apiData.secondVaccination.quote,
+            }
           }
         });
 
@@ -64,7 +64,36 @@ function App() {
         setLu(lastUp);
     }, (error) => {
         console.log(error);
-    })
+    });
+
+    axios.get(apiEndpoint + "/history/7")
+    .then((response) => {
+        try {
+          const apiData = response.data.data;
+
+          const historySize = apiData.history.length;
+          const lastVacData = apiData.history[historySize-1];
+
+          console.log(apiData);
+          console.log(lastVacData);
+
+          if (typeof lastVacData === 'undefined')
+            throw new Error("Undef History");
+
+          setVacData(vacData => {
+            return {
+              ...vacData,
+              firstVacs: lastVacData.firstVaccination,
+              secondVacs: lastVacData.secondVaccination,
+            }
+          });
+        } catch (error) {
+          console.log("error in fetching history endpoint");
+        }
+    }, (error) => {
+        console.log(error);
+    });
+
   }, []); // [] ensures once only
 
   return (

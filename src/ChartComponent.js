@@ -13,7 +13,7 @@ export default function ChartComponent(props) {
           { name: 'Moderna', value: vacData.vaccination.moderna },
           { name: 'AstraZeneca', value: vacData.vaccination.astraZeneca },
           { name: 'Janssen', value: vacData.vaccination.janssen },
-          { name: 'CureVac', value: 0 },
+          { name: 'CureVac', value: vacData.vaccination.curevac },
         ]
       )
     };
@@ -35,8 +35,8 @@ export default function ChartComponent(props) {
     const makefirstsecChart = () => {
       return (
         [
-          { name: 'Erst', value: vacData.delta },
-          { name: 'Zweit', value: vacData.secondVaccination.delta },
+          { name: 'Erst', value: vacData.firstVacs },
+          { name: 'Zweit', value: vacData.secondVacs },
         ]
       );
     }
