@@ -55,41 +55,15 @@ function App() {
               vaccinated: apiData.secondVaccination.vaccinated,
               delta: apiData.secondVaccination.delta,
               quote: apiData.secondVaccination.quote,
-            }
+            },
+            firstVacs: apiData.latestDailyVaccinations.firstVaccination,
+            secondVacs: apiData.latestDailyVaccinations.secondVaccination,
           }
         });
 
         let lastUp = new Date(response.data.meta.lastUpdate);
         lastUp.setTime(lastUp.getTime()-(24*60*60*1000));
         setLu(lastUp);
-    }, (error) => {
-        console.log(error);
-    });
-
-    axios.get(apiEndpoint + "/history/7")
-    .then((response) => {
-        try {
-          const apiData = response.data.data;
-
-          const historySize = apiData.history.length;
-          const lastVacData = apiData.history[historySize-1];
-
-          console.log(apiData);
-          console.log(lastVacData);
-
-          if (typeof lastVacData === 'undefined')
-            throw new Error("Undef History");
-
-          setVacData(vacData => {
-            return {
-              ...vacData,
-              firstVacs: lastVacData.firstVaccination,
-              secondVacs: lastVacData.secondVaccination,
-            }
-          });
-        } catch (error) {
-          console.log("error in fetching history endpoint");
-        }
     }, (error) => {
         console.log(error);
     });
