@@ -1,5 +1,7 @@
 # Vacstats
 
+*Vacstats is not updated anymore*
+
 [Live version](https://vacstats.laurenzfg.com)
 
 This app displays a quick overview over the vaccination efforts in Germany.
